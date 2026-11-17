@@ -52,7 +52,7 @@
         <svelte:boundary onerror={(e: unknown) => reporter.capture(e, "screen")}>
           {@render children()}
           {#snippet failed(_error, reset)}
-            <div class="page flex flex-col items-start justify-center gap-6">
+            <div class="page absolute inset-0 flex flex-col items-start justify-center gap-6">
               <Icon name="info" size="3rem" />
               <h1 class="text-[2.6rem] font-bold">This screen couldn't be shown</h1>
               <p class="max-w-232 text-[1.2rem] text-on-surface-variant">

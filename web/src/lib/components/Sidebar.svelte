@@ -21,6 +21,7 @@
   interface Item {
     id: string;
     label: string;
+    sublabel?: string;
     icon: string;
     route: Route;
     group?: string;
@@ -31,7 +32,8 @@
     // Plex: the libraries chosen in Settings, in the chosen order, then the overflow menu.
     ...libraries.visible.map((l, i) => ({
       id: `lib-${l.id}`,
-      label: l.serverName ? `${l.section.title} · ${l.serverName}` : l.section.title,
+      label: l.section.title,
+      sublabel: l.serverName ? l.serverName : undefined,
       icon: l.icon,
       route: { name: "library", server: l.section.server, key: l.section.key, title: l.section.title, type: l.section.type } as Route,
       group: i === 0 ? "Plex" : undefined,
@@ -109,7 +111,7 @@
 <nav
   class={[
     "z-20 gap-2 overflow-y-scroll duration-200 ease-tv items-center pt-4 px-2",
-    open ? "sidebar elevation-3" : "sidebar-rail",
+    open ? "sidebar elevation-3" : "sidebar-rail hover:sidebar",
   ]}
   onfocusin={() => (open = true)}
   onfocusout={left}
@@ -135,7 +137,7 @@
     {/if}
     <button
       class={[
-        "nav-item sidebar-rail:pl-7.5",
+        "nav-item-plain nav-item h-12 sidebar-rail:pl-7.5",
       ]}
       data-focus-id="nav-{it.id}"
       data-focus-default={active === it.id ? "" : undefined}
@@ -144,7 +146,12 @@
       aria-current={active.startsWith(it.id) ? "page" : undefined}
     >
       <Icon name={it.icon} class="sidebar-rail:self-center" />
-      <span class="nav-label">{it.label}</span>
+      <div class="nav-label flex flex-col">
+        <span class="font-semibold text-body-medium">{it.label}</span>
+        {#if it.sublabel}
+          <span class="text-on-surface-variant text-caption-small -mt-1">{it.sublabel}</span>
+        {/if}
+      </div>
     </button>
   {/each}
     <!-- <button

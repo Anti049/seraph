@@ -19,11 +19,11 @@
     .catch(() => {});
 
   const item =
-    "sidebar-item h-[3.6rem] flex-none rounded-xl text-[1.1rem] font-semibold transition-colors duration-150 focus:bg-inverse-surface focus:text-on-inverse-surface";
+    "nav-item nav-item-plain h-[3.6rem] flex-none rounded-xl text-[1.1rem] font-semibold transition-colors duration-150 focus:bg-inverse-surface focus:text-on-inverse-surface";
 </script>
 
 <nav
-  class="sidebar w-[19rem] flex-none gap-1 overflow-hidden rounded-3xl bg-surface-container-low px-3 py-5 [--sidebar-icon-size:2.2rem] [--sidebar-padding:0.75rem]"
+  class="sidebar w-80 flex-none gap-1 overflow-hidden rounded-3xl bg-surface-container-low px-3 py-5 [--sidebar-icon-size:2.2rem] [--sidebar-padding:0.75rem]"
   aria-label="Channels"
   data-focus-group
   data-focus-lock="y"
@@ -38,7 +38,7 @@
     onclick={() => router.replace({ name: "g-channels" })}
   >
     <Icon name="apps" size="2.2rem" />
-    <span class="sidebar-label">All channels</span>
+    <span class="nav-label">All channels</span>
   </button>
   {#each channels as c (c.id)}
     <button
@@ -50,7 +50,7 @@
       <span class="grid size-[2.2rem] flex-none place-items-center overflow-hidden rounded-full bg-surface-container-high text-[1rem]">
         {#if c.image_path}<img class="size-full object-cover" src={media(c.image_path)} alt="" loading="lazy" />{:else}{c.display_name[0]}{/if}
       </span>
-      <span class="sidebar-label">{c.display_name}</span>
+      <span class="nav-label">{c.display_name}</span>
     </button>
   {/each}
 </nav>

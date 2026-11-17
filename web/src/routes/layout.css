@@ -129,7 +129,7 @@
 }
 
 @utility page {
-	@apply absolute inset-0 overflow-hidden pt-12 pr-16 pb-24 pl-12;
+	@apply absolute inset-0 overflow-hidden p-12;
 }
 
 @utility empty-state {
@@ -177,7 +177,7 @@
 	--sidebar-width: 21rem;
 	--sidebar-icon-size: 1.9rem;
 	--sidebar-padding: 1.1rem;
-	grid-template-columns: var(--sidebar-rail-width) minmax(0, 1fr) auto;
+	/* grid-template-columns: var(--sidebar-rail-width) minmax(0, 1fr) auto; */
 }
 
 /* lunar-ui shows .drawer-scrim with :has(), which old TV engines (Chromium < 105) don't support.
