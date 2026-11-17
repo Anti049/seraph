@@ -1,0 +1,12 @@
+node_modules/
+web/dist/
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+tizen/build/
+mock/media/
+*.jks
+*.keystore
+web/build/
+web/.svelte-kit/

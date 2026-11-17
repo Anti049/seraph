@@ -1,0 +1,207 @@
+@import 'tailwindcss';
+/* lunar-ui: Material 3 roles + components. Only the Catppuccin themes are shipped (Mocha is used,
+   set on <html data-theme> in app.html); lunar-ui-svelte's stylesheet registers its components
+   with Tailwind's scan. */
+@plugin "@anti049/lunar-ui" {
+	themes: catppuccin;
+}
+@import '@anti049/lunar-ui-svelte/styles.css';
+/* <Button> builds its classes at runtime (`button-${variant}`), which Tailwind's scan can't see. */
+@source inline("button button-{filled,tonal,outlined,text,elevated} button-{xs,sm,md,lg,xl} button-{primary,secondary,tertiary,error,surface}");
+
+/* lunar-ui's Mocha palette has no inverse roles yet, so they'd fall back to the default theme's
+   neutral grey. M3 dark: inverse-surface is the light text tone, on-inverse-surface the base. */
+[data-theme='catppuccin-mocha'] {
+	--theme-color-inverse-surface: #cdd6f4;
+	--theme-color-on-inverse-surface: #1e1e2e;
+}
+
+/* Inter (variable, 100–900), bundled and inlined into index.html so it works offline and from file://. */
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-display: block;
+	font-weight: 100 900;
+	src: url('../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2')
+		format('woff2');
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+		U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+		U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-display: block;
+	font-weight: 100 900;
+	src: url('../../node_modules/@fontsource-variable/inter/files/inter-latin-ext-wght-normal.woff2')
+		format('woff2');
+	unicode-range:
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+		U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+		U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Theme additions on top of lunar-ui (Catppuccin Mocha on Material 3 roles, as in Noctua).
+   Usage: bg-surface, text-on-surface, bg-primary text-on-primary, bg-surface-container-high… */
+@theme {
+	/* Colour roles (primary, surface-container-high, on-surface…) come from lunar-ui's
+     catppuccin-mocha theme. These are the Catppuccin extras it has no role for. */
+	--color-primary-dim: #b48ef0;
+	--color-dim: #7f849c; /* overlay1 */
+	--color-subtext: #bac2de; /* subtext1 */
+
+	--font-sans: 'Inter', Roboto, 'Segoe UI', system-ui, sans-serif;
+	--ease-tv: cubic-bezier(0.2, 0.8, 0.2, 1);
+	--radius-card: 0.75rem;
+	--animate-fade-in: fade-in 0.4s ease;
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+	}
+	--animate-slide-in: slide-in 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+	@keyframes slide-in {
+		from {
+			transform: translateX(3rem);
+			opacity: 0;
+		}
+	}
+	--shadow-ring:
+		0 0 0 0.22rem var(--theme-color-surface),
+		0 0 0 0.42rem var(--theme-color-on-surface);
+	--shadow-ring-primary:
+		0 0 0 0.22rem var(--theme-color-surface),
+		0 0 0 0.42rem var(--theme-color-primary);
+}
+
+/* 10-foot UI: 1rem = 1/120 of the viewport width, so every Tailwind size (all rem-based)
+   looks identical on a 1920px Tizen page and a 960dp Android TV WebView. */
+@layer base {
+	html {
+		font-size: calc(100vw / 120);
+		color-scheme: dark;
+		-webkit-font-smoothing: antialiased;
+		@apply bg-surface text-on-surface font-sans;
+	}
+	html,
+	body {
+		@apply m-0 h-full w-full overflow-hidden;
+	}
+	body {
+		font-size: 1.15rem;
+		line-height: 1.35;
+		user-select: none;
+		/* cursor: none; */
+	}
+	body > div {
+		display: contents;
+	}
+	:focus {
+		outline: none;
+	}
+}
+
+/* Shared pieces, kept as utilities so they compose with Tailwind modifiers. */
+/* TV metrics for lunar-ui's .button (see components/Btn.svelte): lunar sizes in pt, which
+   wouldn't scale with the 1/120-viewport rem. Colours stay lunar's per variant. On focus every
+   button flips to the inverse surface, the strongest cue from across a room. */
+@utility btn {
+	@apply inline-flex h-[3.4rem] shrink-0 items-center gap-3 rounded-full px-6 py-0 text-[1.15rem] leading-none font-semibold whitespace-nowrap transition duration-150 ease-tv;
+	& svg {
+		@apply size-6;
+	}
+	&:focus,
+	&:focus-visible {
+		@apply scale-106 bg-inverse-surface text-on-inverse-surface shadow-none outline-none;
+	}
+}
+
+@utility chip {
+	@apply inline-flex h-[2.6rem] shrink-0 items-center rounded-full bg-surface-container px-5 font-semibold whitespace-nowrap text-on-surface-variant transition duration-150 ease-tv;
+	&:focus {
+		@apply scale-106 bg-inverse-surface text-on-inverse-surface;
+	}
+}
+
+@utility chip-on {
+	@apply bg-surface-container-high text-on-surface inset-ring-[0.12rem] inset-ring-primary;
+}
+
+@utility page {
+	@apply absolute inset-0 overflow-hidden pt-12 pr-16 pb-24 pl-12;
+}
+
+@utility empty-state {
+	@apply py-12 text-[1.3rem] text-on-surface-variant;
+}
+
+/* Mauve glow from the top-left corner, used behind setup screens. */
+@utility bg-glow {
+	background:
+		radial-gradient(
+			55rem 40rem at 0% 0%,
+			rgb(203 166 247 / 0.14),
+			transparent 70%
+		),
+		var(--theme-color-surface);
+}
+
+@utility field {
+	@apply h-[4.2rem] w-full rounded-2xl border-[0.15rem] border-outline-variant bg-surface-container px-[1.4rem] text-[1.4rem];
+	&:focus {
+		@apply border-on-surface;
+	}
+}
+
+@utility field-label {
+	@apply mb-2 ml-1.5 block text-base text-on-surface-variant;
+}
+
+/* A list row / option tile that inverts on focus (servers, scan results, queue rows…). */
+@utility tile {
+	@apply rounded-2xl bg-surface-container text-left transition duration-150 ease-tv;
+	&:focus {
+		@apply bg-inverse-surface text-on-inverse-surface;
+	}
+}
+
+/* ---------- lunar-ui at TV scale ----------
+   lunar-ui sizes its components in pt and spacing steps for desktop; these set its own knobs
+   (custom properties) to 10-foot values, and keep the side menu from reflowing the page. */
+
+/* App shell: lunar-ui scaffold whose first column is the rail's width. When the rail opens
+   into a full sidebar it grows over the content instead of re-laying out every grid on screen. */
+@utility tv-scaffold {
+	--sidebar-rail-width: 6.5rem;
+	--sidebar-width: 21rem;
+	--sidebar-icon-size: 1.9rem;
+	--sidebar-padding: 1.1rem;
+	grid-template-columns: var(--sidebar-rail-width) minmax(0, 1fr) auto;
+}
+
+/* lunar-ui shows .drawer-scrim with :has(), which old TV engines (Chromium < 105) don't support.
+   The scrim gets data-open alongside its drawer instead. */
+@utility drawer-scrim-open {
+	@apply pointer-events-auto opacity-100;
+}
+
+/* appbar as a page header: lunar-ui's structure (title/subtitle stack, trailing actions),
+   with TV type sizes and no bar background. */
+@utility tv-appbar {
+	@apply mb-8 h-auto gap-6 bg-transparent p-0;
+	& .appbar-title {
+		@apply text-[2.6rem] leading-tight font-bold tracking-tight;
+	}
+	& .appbar-subtitle {
+		@apply mt-1 text-[1.15rem] leading-normal font-medium;
+	}
+	& .appbar-trailing {
+		@apply max-w-none gap-3.5;
+	}
+}
+
+/* badge at TV scale */
+@utility tv-badge {
+	@apply min-h-[1.9rem] min-w-[1.9rem] rounded-full px-2.5 py-0.5 text-[0.95rem] font-bold;
+}

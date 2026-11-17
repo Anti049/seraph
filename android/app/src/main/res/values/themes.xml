@@ -1,0 +1,8 @@
+<resources>
+    <style name="Theme.Seraph" parent="@android:style/Theme.Material.NoActionBar.Fullscreen">
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:colorAccent">#CBA6F7</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <color name="bg">#1E1E2E</color>
+</resources>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" data-theme="catppuccin-mocha">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="text-scale" content="scale" />
+		<script>
+			// Old TV engines (Tizen 6 = Chromium 76) lack a few built-ins the Svelte/SvelteKit runtime uses.
+			(function () {
+				var d = function (o, k, v) { if (!o[k]) Object.defineProperty(o, k, { value: v, writable: true, configurable: true }); };
+				d(String.prototype, "replaceAll", function (a, b) {
+					if (a instanceof RegExp) return this.replace(a, b);
+					return this.split(a).join(typeof b === "function" ? b(a) : b);
+				});
+				d(Object, "hasOwn", function (o, k) { return Object.prototype.hasOwnProperty.call(o, k); });
+				var at = function (i) { i = Math.trunc(i) || 0; if (i < 0) i += this.length; return i < 0 || i >= this.length ? undefined : this[i]; };
+				d(Array.prototype, "at", at);
+				d(String.prototype, "at", at);
+				d(Array.prototype, "findLast", function (f, t) { for (var i = this.length - 1; i >= 0; i--) if (f.call(t, this[i], i, this)) return this[i]; });
+				if (window.CSS && !CSS.escape) CSS.escape = function (s) { return String(s).replace(/[^a-zA-Z0-9_-]/g, function (c) { return "\\" + c; }); };
+			})();
+		</script>
+		%sveltekit.head%
+	</head>
+	<body>
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+</html>

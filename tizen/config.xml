@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Samsung Tizen TV widget for SERAPH. The whole UI (web/build) is packaged inside and talks
+  to plex.tv and your Plex Media Server directly.
+-->
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets"
+        id="http://nploetz.dev/seraph" version="1.1.0" viewmodes="maximized">
+    <tizen:application id="SeraphTVnp.SERAPH" package="SeraphTVnp" required_version="3.0"/>
+    <name>SERAPH</name>
+    <icon src="icon.png"/>
+    <content src="index.html"/>
+
+    <tizen:profile name="tv-samsung"/>
+    <feature name="http://tizen.org/feature/screen.size.all"/>
+
+    <tizen:privilege name="http://tizen.org/privilege/internet"/>
+    <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
+    <tizen:privilege name="http://developer.samsung.com/privilege/network.public"/>
+
+    <access origin="*" subdomains="true"/>
+
+    <tizen:setting screen-orientation="landscape" context-menu="disable" background-support="disable"
+                   encryption="disable" install-location="auto" hwkey-event="enable"/>
+    <tizen:metadata key="http://samsung.com/tv/metadata/prelaunch.support" value="false"/>
+</widget>
